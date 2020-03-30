@@ -12,9 +12,19 @@ public class UserService {
 
     @Autowired
     UserDao userDao;
+
     public void insert(User user){
         userDao.insert(user);
     }
     public List<User> selectAll( ){ return userDao.selectAll( ); }
+
+
+    public User login(User user){
+        User u = userDao.selectByUsername(user.getUsername());
+        if(u!=null&&user.getPassword().equals(user.getPassword())){
+            return user;
+        }
+        return null;
+    }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -28,7 +29,6 @@ public class UserController {
         return "index";
     }
 
-
     @RequestMapping("/toRegister")
     public String toRegister(){
         return "user/reg";
@@ -37,6 +37,20 @@ public class UserController {
     @RequestMapping("/forget")
     public String forget(){
         return "user/forget";
+    }
+
+
+    //用户登录
+    @RequestMapping("/logining")
+    public String userLogin(User user, Model model, HttpServletRequest request) {
+        User loginUser = userService.login(user);
+        if (loginUser == null) {
+            model.addAttribute("login_err", "用户名或密码错误!");
+            //跳转到当前登录页面
+            return "user/login";
+        }
+        request.getSession().setAttribute("user", loginUser);
+        return "index";
     }
 
 }
